@@ -38,21 +38,21 @@ A robust user management API built with Node.js, Express, and Prisma. This API h
 
 ```bash
 npm install
-
+```
 ## Configure Environment Variables
 
 Create a .env file in the root directory and add the following variables:
-
+```
 env
 
 DATABASE_URL=postgresql://username:password@localhost:5432/your-database
 JWT_SECRET=your_jwt_secret_key
-
+```
 Replace username, password, localhost, and your-database with your PostgreSQL credentials and database name. Set your_jwt_secret_key to a strong secret key for JWT signing.
 Run Migrations
 
-Initialize your database schema:
-
+##  Initialize your database schema:
+```
 bash
 
 npx prisma migrate dev
@@ -62,17 +62,17 @@ Start the Server
 bash
 
 npm start
-
-The server will be running at http://localhost:3000.
-API Endpoints
+```
+ The server will be running at http://localhost:3000.
+## API Endpoints
 1. Register User
 
-    Endpoint: POST /register
+    -Endpoint: POST /register
 
-    Request Body:
+    -Request Body:
 
     json
-
+```
     {
       "name": "John Doe",
       "email": "john@example.com",
@@ -82,7 +82,7 @@ API Endpoints
       "weight": 70.5,
       "height": 175.0
     }
-
+```
     Response: Returns the created user object.
 
 2. Login User
@@ -92,12 +92,12 @@ API Endpoints
     Request Body:
 
     json
-
+```
     {
       "email": "john@example.com",
       "password": "password123"
     }
-
+```
     Response: Returns a JWT token.
 
 3. Get All Users
@@ -130,7 +130,7 @@ Authorization: Bearer <your_jwt_token>
 Request Body:
 
 json
-
+```
     {
       "name": "John Doe",
       "email": "john@example.com",
@@ -139,10 +139,10 @@ json
       "weight": 71.0,
       "height": 176.0
     }
-
+```
     Response: Returns the updated user profile object.
 
-Testing
+## Testing
 
 You can run tests using a testing framework of your choice. Ensure to set up your test environment variables appropriately.
 Contributing
@@ -153,9 +153,10 @@ Contributing
     Push to the branch (git push origin feature/your-feature).
     Create a new Pull Request.
 
-License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
 Acknowledgements
 
     Prisma
