@@ -36,7 +36,7 @@ const SignIn = () => {
                 // Save the token (e.g., in localStorage or context)
                 localStorage.setItem("token", response.data.token);
                 // Optionally redirect the user
-                window.location.href = "/dashboard"; // Replace with your route
+                window.location.href = "/profile"; // Replace with your route
             } else {
                 setError("Login failed. Please check your credentials.");
             }
@@ -59,7 +59,7 @@ const SignIn = () => {
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <label htmlFor="email" className="text-lg">Email</label>
-                        <CustomInput hint={"email"} type="email" value={email} onChange={handleEmailChange} />
+                        <CustomInput hint={"email"} value={email} onChange={handleEmailChange} />
 
                         <label htmlFor="password" className="text-lg">Password</label>
                         <CustomInput type="password" hint={"password"} value={password} onChange={handlePasswordChange} />

@@ -9,6 +9,10 @@ userRouter.post('/register', userController.registerUser);
 
 userRouter.post('/login', userController.loginUser);
 
-userRouter.get('/profile',authenticateToken, userController.getUsers);
+userRouter.get('/userlist', userController.getUsers);
+
+userRouter.get('/profile', authenticateToken, userController.getUser);
+
+userRouter.put('/profile',authenticateToken, userController.updateUser);
 
 export default userRouter;
