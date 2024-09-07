@@ -30,7 +30,7 @@ A robust user management API built with Node.js, Express, and Prisma. This API h
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/aashishrauniyar/user-profile-management-api .git
+   git clone https://github.com/aashishrauniyar/user-profile-management-api.git
    cd your-repository
 # Project Setup
 
