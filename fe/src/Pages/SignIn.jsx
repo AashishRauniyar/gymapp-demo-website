@@ -79,6 +79,16 @@ const SignIn = () => {
                         >
                             Login
                         </button>
+
+                        {/* forget oasswird */}
+
+                        <div className="text-sm mt-4">
+                            <a className="text-blue-500 hover:underline" href="/forgot-password">
+                                Forgot password?
+                            </a>
+
+                            </div>
+
                     </div>
                 </div>
             </>

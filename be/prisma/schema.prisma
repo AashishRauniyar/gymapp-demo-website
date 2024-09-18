@@ -18,15 +18,68 @@ model trainers {
 }
 
 model users {
-  user_id  Int      @id @default(autoincrement())
-  name     String   @db.VarChar(100)
-  email    String   @unique @db.VarChar(100)
-  password String   @db.VarChar(100)
-  age      Int?
-  gender   String?  @db.VarChar(10)
-  weight   Decimal? @db.Decimal(5, 2)
-  height   Decimal? @db.Decimal(5, 2)
+  user_id          Int              @id @default(autoincrement())
+  username         String           @unique
+  full_name        String
+  email            String           @unique
+  password         String
+  phone_number     String?
+  profile_image    String?
+  weight           Float?           // Use Float for Decimal in PostgreSQL
+  height           Float?           // Use Float for Decimal in PostgreSQL
+  gender           Gender
+  role             Role
+  fitness_goal     FitnessGoal
+  fitness_level    FitnessLevel
+  bmi              Float?           // Use Float for Decimal in PostgreSQL
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  health_issues    String?
+  activity_level   ActivityLevel
+  workout_preference WorkoutPreference
+  reset_token      String?          // Add this line for reset token
+  reset_token_expiry DateTime?      // Optional: You can also add expiry time for the reset token
 }
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum Role {
+  member
+  trainer
+  admin
+}
+
+enum FitnessGoal {
+  gain
+  maintain
+  loss
+}
+
+enum FitnessLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum ActivityLevel {
+  sedentary
+  lightly_active
+  active
+  very_active
+}
+
+enum WorkoutPreference {
+  strength
+  cardio
+  hiit
+  yoga
+  mixed
+}
+
 
 model workouts {
   workout_id   Int       @id @default(autoincrement())

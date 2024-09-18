@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { userInstance } from "../utils/axios";
+import LogoutButton from "../components/LogoutButton";
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -9,6 +10,7 @@ const Profile = () => {
         gender: '',
         weight: '',
         height: '',
+        // no need to include user_id here since we don't want to show it
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -29,7 +31,10 @@ const Profile = () => {
                     },
                 });
 
-                setUser(response.data);
+                // Exclude user_id from the response data before setting the state
+                // eslint-disable-next-line no-unused-vars
+                const { user_id,gender, ...rest } = response.data;
+                setUser(rest);
 
             } catch (error) {
                 setError(`Error fetching user data: ${error.message}`);
@@ -128,8 +133,10 @@ const Profile = () => {
                         >
                             Edit Profile
                         </button>
+                        
                     )}
                 </div>
+                <LogoutButton/>
             </div>
         </div>
     );

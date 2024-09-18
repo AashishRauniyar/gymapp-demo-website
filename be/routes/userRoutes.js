@@ -15,4 +15,10 @@ userRouter.get('/profile', authenticateToken, userController.getUser);
 
 userRouter.put('/profile',authenticateToken, userController.updateUser);
 
+userRouter.post("/forgot-password", userController.forgotPassword);
+
+// In your backend routes file
+userRouter.post("/reset-password/:token", userController.resetPassword);
+
+
 export default userRouter;
