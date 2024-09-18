@@ -118,20 +118,6 @@ const getUsers = async (req, res) => {
 
 
 
-
-// const getUser = async (req, res) => {
-//     try {
-//         const userId = req.user.id;
-//         const user = await prisma.users.findUnique({
-//             where: { id: userId },
-//         });
-//         res.status(200).json(user);
-//     } catch (error) {
-//         console.error('Error getting user:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
-
 const getUser = async (req, res) => {
   try {
     console.log('Authenticated User:', req.user); // Add this line to debug
@@ -178,35 +164,6 @@ const updateUser = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-// change password
-
-// const changePassword = async (req, res) => {
-
-//   const { oldPassword, newPassword } = req.body;
-//   try {
-//     const userId = req.user.user_id;
-//     const user = await prisma.users.findUnique({
-//       where: { user_id: userId },
-//     });
-//     if (!user) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-//     const isPasswordValid = await bcryptjs.compare(oldPassword, user.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ error: 'Invalid password' });
-//     }
-//     const hashedPassword = await bcryptjs.hash(newPassword, 10);
-//     await prisma.users.update({
-//       where: { user_id: userId },
-//       data: { password: hashedPassword },
-//     });
-//     res.status(200).json({ message: 'Password updated successfully!' });
-//   } catch (error) {
-//     console.error('Error changing password:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// }
 
 
 import crypto from "crypto";
@@ -276,9 +233,9 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params; // Extract token from URL params
-    const { newPassword } = req.body; // Extract new password from request body
+    const { password } = req.body; // Extract new password from request body
 
-    if (!newPassword) {
+    if (!password) {
       return res.status(400).json({ error: "New password is required" });
     }
 
@@ -295,7 +252,7 @@ export const resetPassword = async (req, res) => {
     }
 
     // Hash the new password
-    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Update the user's password and clear the reset token
     await prisma.users.update({
@@ -313,8 +270,6 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 
 export default { registerUser, loginUser, getUsers,getUser, updateUser, forgotPassword, resetPassword };
