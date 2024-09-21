@@ -7,6 +7,71 @@ const prisma = new PrismaClient();
 
 // Adjust the import path as needed
 
+// export const registerUser = async (req, res) => {
+//   try {
+//     const {
+//       username,
+//       full_name,
+//       email,
+//       password,
+//       phone_number,
+//       profile_image,
+//       weight,
+//       height,
+//       gender,
+      
+//       fitness_goal,
+//       fitness_level,
+//       health_issues,
+//       activity_level,
+//       workout_preference,
+//     } = req.body;
+
+//     // Convert weight and height to numbers
+//     const parsedWeight = parseFloat(weight);
+//     const parsedHeight = parseFloat(height);
+
+//     if (isNaN(parsedWeight) || isNaN(parsedHeight)) {
+//       return res.status(400).json({ error: 'Invalid weight or height' });
+//     }
+
+//     // Calculate BMI
+//     const bmi = parsedHeight > 0 ? parsedWeight / ((parsedHeight / 100) ** 2) : null;
+
+//     // Hash the password
+//     const hashedPassword = await bcryptjs.hash(password, 10);
+
+//     const role = 'member';
+
+//     const user = await prisma.users.create({
+//       data: {
+//         username,
+//         full_name,
+//         email,
+//         password: hashedPassword, // Store hashed password
+//         phone_number,
+//         profile_image,
+//         weight: parsedWeight,
+//         height: parsedHeight,
+//         gender,
+//         role,
+//         fitness_goal,
+//         fitness_level,
+//         bmi, // Include calculated BMI
+//         health_issues,
+//         activity_level,
+//         workout_preference,
+//       },
+//     });
+
+//     res.status(201).json(user);
+//   } catch (error) {
+//     console.error('Error registering user:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+
 export const registerUser = async (req, res) => {
   try {
     const {
@@ -19,7 +84,6 @@ export const registerUser = async (req, res) => {
       weight,
       height,
       gender,
-      role,
       fitness_goal,
       fitness_level,
       health_issues,
@@ -38,9 +102,30 @@ export const registerUser = async (req, res) => {
     // Calculate BMI
     const bmi = parsedHeight > 0 ? parsedWeight / ((parsedHeight / 100) ** 2) : null;
 
+    // Check if username already exists
+    const existingUser = await prisma.users.findUnique({
+      where: { username },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username is already taken' });
+    }
+
+    // Check if email already exists
+    const existingEmail = await prisma.users.findUnique({
+      where: { email },
+    });
+
+    if (existingEmail) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
+
     // Hash the password
     const hashedPassword = await bcryptjs.hash(password, 10);
 
+    const role = 'member';
+
+    // Create the new user
     const user = await prisma.users.create({
       data: {
         username,
@@ -62,9 +147,16 @@ export const registerUser = async (req, res) => {
       },
     });
 
+    // Respond with the created user
     res.status(201).json(user);
   } catch (error) {
     console.error('Error registering user:', error);
+    
+    // Handle unique constraint errors
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: `A user with this ${error.meta.target[0]} already exists.` });
+    }
+
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
