@@ -39,6 +39,9 @@ model users {
   workout_preference WorkoutPreference
   reset_token      String?          // Add this line for reset token
   reset_token_expiry DateTime?      // Optional: You can also add expiry time for the reset token
+
+   // Relationship with workouts
+  assigned_workouts workouts[] @relation("UserWorkouts")
 }
 
 enum Gender {
@@ -82,10 +85,20 @@ enum WorkoutPreference {
 
 
 model workouts {
-  workout_id   Int       @id @default(autoincrement())
-  workout_name String    @db.VarChar(100)
-  sets         Int
-  reps         Int
-  trainer_id   Int?
-  trainers     trainers? @relation(fields: [trainer_id], references: [trainer_id], onDelete: NoAction, onUpdate: NoAction)
+  workout_id        Int       @id @default(autoincrement())
+  workout_name      String    @db.VarChar(100)
+  workout_level     String?   @db.VarChar(50) // e.g., Beginner, Intermediate, Advanced
+  description       String?   // A brief description of the workout
+  sets              Int
+  reps              Int
+  image_urls        String[]  // Array for multiple image URLs
+  video_url         String?   // URL for workout video
+  target_body_part  String?   // E.g., Chest, Legs, Back
+  difficulty        String?   // E.g., Easy, Medium, Hard
+  workout_group     String?   // E.g., Cardio, Strength Training, etc.
+  trainer_id        Int?
+  trainers          trainers?  @relation(fields: [trainer_id], references: [trainer_id], onDelete: NoAction, onUpdate: NoAction)
+
+  // Relationship with users
+  users             users[] @relation("UserWorkouts")
 }
